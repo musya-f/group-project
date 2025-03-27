@@ -1,0 +1,243 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class UniversityCourseManagement extends JFrame {
+    private JPanel panelMain;
+    private JTextField txtName;
+    private JButton btnOk;
+    private JPasswordField passwordField;
+
+    public UniversityCourseManagement() {
+        btnOk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(btnOk, txtName.getText() + "University Course Management System");
+            }
+        });
+        txtName.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        UniversityCourseManagement uni = new UniversityCourseManagement();
+        uni.setContentPane(uni.panelMain);
+        uni.setTitle("University Course Management System");
+        uni.setSize(500, 500);
+        uni.setVisible(true);
+        uni.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+}
+
+
+
+
+
+
+
+
+
+abstract class Person {
+        protected String id;
+        protected String name;
+        protected String email;
+
+        public Person(String id,String name,String email){
+            this.id=id;
+            this.name=name;
+            this.email=email;
+        }
+        public abstract void displayDetails();
+    }
+    class Student extends Person {
+        protected String department;
+        protected int enrollmentYear;
+        protected String status;
+
+        public Student(String id,String name,String email,String department,int enrolmentYear, String status) {
+            super(id, name, email);
+            this.department = department;
+            this.enrollmentYear = enrolmentYear;
+            this.status = status;
+        }
+
+        @Override
+        public void displayDetails() {
+            System.out.println("Student ID:"+id+",Nme:"+name+",Email:"+email+",Department:"+department+",Enrollment Year"+enrollmentYear+",Status:"+status);
+        }
+    }
+    class Instructor extends Person {
+        protected String department;
+
+        public Instructor(String id,String name,String email,String department){
+            super(id,name,email);
+            this.department=department;
+        }
+
+        @Override
+        public void displayDetails() {
+            System.out.println("Instructor ID:"+id+",Name:"+name+",Email:"+email+",Department:"+department);
+        }
+    }
+class Course {
+    protected String courseId;
+    protected String courseName;
+    protected int credits;
+    protected String instructor;
+
+    public Course(String courseId, String courseName, int credits, String instructor) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.credits = credits;
+        this.instructor = instructor;
+    }
+
+    public void displayCourseInfo() {
+        System.out.println("Course ID:"+courseId+",Course Name:"+courseName+",Credits"+credits+",Instructor:"+instructor);
+    }
+}
+class Enrollment extends Course{
+        protected Student student;
+        protected Course course;
+        protected String enrollmentDate;
+
+        public Enrollment(Student student,Course course,String enrollmentDate){
+            super(course.courseId,course.courseName,course.credits,enrollmentDate);
+            this.student=student;
+            this.course=course;
+            this.enrollmentDate=enrollmentDate;
+        }
+        public void displayEnrollment() {
+            System.out.println("Student:" + student.name + "enrolled in" + course.courseName + "on" + enrollmentDate);
+        }
+    }
+    class Exam{
+        protected String examId;
+        protected Course course;
+        protected String examDate;
+        protected String type;
+
+        public Exam(String examId,Course course,String examDate,String type){
+            this.examId=examId;
+            this.course=course;
+            this.examDate=examDate;
+            this.type=type;
+        }
+        public void displayExamDetails(){
+            System.out.println("Exam ID:"+examId +",Course:"+course.courseName+",Date:"+examDate+",Type:"+ type);
+        }
+    }
+    class Schedule {
+        protected Course course;
+        protected String day;
+        protected String time;
+        protected String location;
+
+        public Schedule(Course course, String day, String time, String location) {
+            this.course = course;
+            this.day = day;
+            this.time = time;
+            this.location = location;
+        }
+
+        public void displayScheduleInfo() {
+            System.out.println("Course:" + course.courseName + "scheduled on" + day + "at" + time + "in" + location);
+        }
+    }
+    class Attendance {
+        protected Student student;
+        protected Course course;
+        protected int attendedClasses;
+        protected int totalClasses;
+
+        public Attendance(Student student, Course course, int attendedClasses, int totalClasses) {
+            this.student = student;
+            this.course = course;
+            this.attendedClasses = attendedClasses;
+            this.totalClasses = totalClasses;
+        }
+
+        public double getAttendancePercentage() {
+            return (double) attendedClasses / totalClasses * 100;
+        }
+
+        public void displayAttendance() {
+            System.out.println("Student: " + student.name + " Attendance: " + getAttendancePercentage() + "%");
+        }
+    }
+
+    class Results {
+        protected Student student;
+        protected Course course;
+        protected double grade;
+
+        public Results(Student student, Course course, double grade) {
+            this.student = student;
+            this.course = course;
+            this.grade = grade;
+        }
+
+        public void displayResults() {
+            System.out.println("Student: " + student.name + "Course: " + course.courseName + "Grade:"+grade);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import java.sql.DriverManager;
+
+public class Connection {
+        public static void main(String[] args) {
+            try {
+                java.sql.Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/university_course_management_system", "postgres", "F0714537700m");
+                System.out.println(con);
+            }
+            catch (Exception e){
+                System.out.println(e);
+            }
+        }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
