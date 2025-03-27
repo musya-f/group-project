@@ -1,0 +1,34 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class UniversityCourseManagement extends JFrame {
+    private JPanel panelMain;
+    private JTextField txtName;
+    private JButton btnOk;
+    private JPasswordField passwordField;
+
+    public UniversityCourseManagement() {
+        btnOk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(btnOk, txtName.getText() + "University Course Management System");
+            }
+        });
+        txtName.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        UniversityCourseManagement uni = new UniversityCourseManagement();
+        uni.setContentPane(uni.panelMain);
+        uni.setTitle("University Course Management System");
+        uni.setSize(500, 500);
+        uni.setVisible(true);
+        uni.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+}
