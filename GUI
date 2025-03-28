@@ -1,0 +1,230 @@
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+
+public class UniversityGUI {
+    private JFrame frame;
+    private JPanel mainPanel;
+    private CardLayout cardLayout;
+    private DefaultTableModel courseTableModel, studentTableModel, instructorTableModel;
+    private Map<String, String> users;
+
+    public UniversityGUI() {
+        frame = new JFrame("University Management System");
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        users = new HashMap<>();
+        users.put("project", "1234");
+
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+
+        mainPanel.add(createLoginPanel(), "Login");
+        mainPanel.add(createDashboardPanel(), "Dashboard");
+        mainPanel.add(createCoursePanel(), "Courses");
+        mainPanel.add(createStudentPanel(), "Students");
+        mainPanel.add(createInstructorPanel(), "Instructors");
+        mainPanel.add(createEnrollmentPanel(), "Enrollments");
+
+        frame.add(mainPanel);
+        frame.setVisible(true);
+    }
+
+    private JPanel createLoginPanel() {
+        JPanel panel = new JPanel(new GridLayout(3, 2));
+        JTextField usernameField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
+        JButton loginButton = new JButton("Login");
+
+        loginButton.addActionListener(e -> {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+            if (users.containsKey(username) && users.get(username).equals(password)) {
+                cardLayout.show(mainPanel, "Dashboard");
+            } else {
+                JOptionPane.showMessageDialog(frame, "Invalid credentials!");
+            }
+        });
+
+        panel.add(new JLabel("Username:"));
+        panel.add(usernameField);
+        panel.add(new JLabel("Password:"));
+        panel.add(passwordField);
+        panel.add(loginButton);
+
+        return panel;
+    }
+
+    private JPanel createDashboardPanel() {
+        JPanel panel = new JPanel(new GridLayout(4, 1, 5, 5));
+        JButton coursesButton = new JButton("Courses");
+        JButton studentsButton = new JButton("Students");
+        JButton instructorsButton = new JButton("Instructors");
+        JButton enrollmentsButton = new JButton("Students");
+
+        coursesButton.addActionListener(e -> cardLayout.show(mainPanel, "Courses"));
+        studentsButton.addActionListener(e -> cardLayout.show(mainPanel, "Students"));
+        instructorsButton.addActionListener(e -> cardLayout.show(mainPanel, "Instructors"));
+        enrollmentsButton.addActionListener(e -> cardLayout.show(mainPanel, "Enrollments"));
+
+        panel.add(coursesButton);
+        panel.add(studentsButton);
+        panel.add(instructorsButton);
+        panel.add(enrollmentsButton);
+
+        return panel;
+    }
+
+    private JPanel createCoursePanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        String[] columns = {"Course ID", "Course Name", "Credits"};
+        courseTableModel = new DefaultTableModel(columns, 0);
+        JTable table = new JTable(courseTableModel);
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+
+        JPanel inputPanel = new JPanel(new GridLayout(3, 2));
+        JTextField courseIdField = new JTextField();
+        JTextField courseNameField = new JTextField();
+        JTextField creditsField = new JTextField();
+        JButton addButton = new JButton("Add");
+        JButton deleteButton = new JButton("Delete");
+        JButton backButton = new JButton("Back");
+
+        inputPanel.add(new JLabel("Course ID:"));
+        inputPanel.add(courseIdField);
+        inputPanel.add(new JLabel("Course Name:"));
+        inputPanel.add(courseNameField);
+        inputPanel.add(new JLabel("Credits:"));
+        inputPanel.add(creditsField);
+        inputPanel.add(addButton);
+        inputPanel.add(deleteButton);
+        inputPanel.add(backButton);
+
+        addButton.addActionListener(e -> {
+            courseTableModel.addRow(new Object[]{courseIdField.getText(), courseNameField.getText(), creditsField.getText()});
+        });
+        deleteButton.addActionListener(e -> {
+            courseTableModel.removeRow(courseTableModel.getRowCount() - 1);
+        });
+        backButton.addActionListener(e -> {
+            cardLayout.show(mainPanel, "Dashboard");
+        });
+
+        panel.add(inputPanel, BorderLayout.SOUTH);
+        return panel;
+    }
+
+    private JPanel createStudentPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        String[] columns = {"Student ID", "Name"};
+        studentTableModel = new DefaultTableModel(columns, 0);
+        JTable table = new JTable(studentTableModel);
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+
+        JPanel inputPanel = new JPanel(new GridLayout(2, 2));
+        JTextField studentIdField = new JTextField();
+        JTextField studentNameField = new JTextField();
+        JButton addButton = new JButton("Add");
+        JButton deleteButton = new JButton("Delete");
+        JButton backButton = new JButton("Back");
+
+        inputPanel.add(new JLabel("Student ID:"));
+        inputPanel.add(studentIdField);
+        inputPanel.add(new JLabel("Name:"));
+        inputPanel.add(studentNameField);
+        inputPanel.add(addButton);
+        inputPanel.add(deleteButton);
+        inputPanel.add(backButton);
+
+        addButton.addActionListener(e -> {
+            studentTableModel.addRow(new Object[]{studentIdField.getText(), studentNameField.getText()});
+        });
+        deleteButton.addActionListener(e -> {
+            studentTableModel.removeRow(studentTableModel.getRowCount() - 1);
+        });
+        backButton.addActionListener(e -> {
+            cardLayout.show(mainPanel, "Dashboard");
+        });
+
+        panel.add(inputPanel, BorderLayout.SOUTH);
+        return panel;
+    }
+
+    private JPanel createInstructorPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        String[] columns = {"Instructor ID", "Name"};
+        instructorTableModel = new DefaultTableModel(columns, 0);
+        JTable table = new JTable(instructorTableModel);
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+
+        JPanel inputPanel = new JPanel(new GridLayout(2, 2));
+        JTextField instructorIdField = new JTextField();
+        JTextField instructorNameField = new JTextField();
+        JButton addButton = new JButton("Add ");
+        JButton deleteButton = new JButton("Delete");
+        JButton backButton = new JButton("Back");
+
+        inputPanel.add(new JLabel("Instructor ID:"));
+        inputPanel.add(instructorIdField);
+        inputPanel.add(new JLabel("Name:"));
+        inputPanel.add(instructorNameField);
+        inputPanel.add(addButton);
+        inputPanel.add(deleteButton);
+        inputPanel.add(backButton);
+
+        addButton.addActionListener(e -> {
+            instructorTableModel.addRow(new Object[]{instructorIdField.getText(), instructorNameField.getText()});
+        });
+        deleteButton.addActionListener(e -> {
+            instructorTableModel.removeRow(instructorTableModel.getRowCount() - 1);
+        });
+        backButton.addActionListener(e -> {
+            cardLayout.show(mainPanel, "Dashboard");
+        });
+
+        panel.add(inputPanel, BorderLayout.SOUTH);
+        return panel;
+    }
+    private JPanel createEnrollmentPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        String[] columns = {"Student ID", "Course ID"};
+        DefaultTableModel enrollmentTableModel = new DefaultTableModel(columns, 0);
+        JTable table = new JTable(enrollmentTableModel);
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+
+        JPanel inputPanel = new JPanel(new GridLayout(2, 2));
+        JTextField studentIdField = new JTextField();
+        JTextField courseIdField = new JTextField();
+        JButton enrollButton = new JButton("Enroll");
+        JButton deleteButton = new JButton("Delete");
+        JButton backButton = new JButton("Back");
+
+        inputPanel.add(new JLabel("Student ID:"));
+        inputPanel.add(studentIdField);
+        inputPanel.add(new JLabel("Course ID:"));
+        inputPanel.add(courseIdField);
+        inputPanel.add(enrollButton);
+        inputPanel.add(deleteButton);
+        inputPanel.add(backButton);
+
+        enrollButton.addActionListener(e -> {
+            enrollmentTableModel.addRow(new Object[]{studentIdField.getText(), courseIdField.getText()});
+        });
+        deleteButton.addActionListener(e -> {
+            enrollmentTableModel.removeRow(enrollmentTableModel.getRowCount() - 1);
+        });
+        backButton.addActionListener(e -> {
+            cardLayout.show(mainPanel, "Dashboard");
+        });
+
+        panel.add(inputPanel, BorderLayout.SOUTH);
+        return panel;
+    }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(UniversityGUI::new);
+    }
+}
